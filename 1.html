@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serre Automatisée</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+
+
+        body {
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background: url('f82ced219a_132401_ferme-automatisee.jpg') no-repeat center center fixed;
+    background-size: cover;
+}
+        header {
+            color:black;
+            text-align: center;
+            padding: 1em;
+        }
+        .logo {
+            float: left; 
+            height: 50px;
+            width: 50px;
+            border-radius: 20px;
+
+
+        }
+
+        section {
+            margin: 20px;
+            background-color:aliceblue;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .sensor-image {
+            margin-top: 20px;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .animated {
+            animation: fadeIn 1s ease-in-out;
+        }
+        .c{
+            height: 150px;
+            display: flex;
+            text-align: center;
+            align-items: center;
+            justify-content: space-evenly;
+
+        }
+
+        .toggle-switch {
+            display: inline-block;
+            position: relative;
+            width: 60px;
+            height: 34px;
+            margin-top:1.5rem;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        .head{
+            display: flex;
+            flex-wrap: nowrap;
+        }
+
+
+ </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <img src="370122835_899589201701852_7899276325205566988_n.jpg" alt="Logo">
+        </div>
+        <h2>Serre Automatisée</h2>
+    </header>
+
+    <section class="container animated">
+        <h4  class="mb-4">Contrôles</h4>
+        <div class="form-group">
+            <label for="automatisation" class="toggle-switch">
+                <input type="checkbox" id="automatisation" onchange="toggleAutomatisation()">
+                <span class="slider"></span>
+            </label>
+            Activer l'automatisation
+        </div>
+        <div class="form-group">
+            <label for="tempMax">Maximale Température</label>
+            <input type="number" class="form-control" id="tempMax" value="25" disabled>
+        </div>
+        <div class="form-group">
+            <label for="BrightMax">Luminosité Maximale</label>
+            <input type="number" class="form-control" id="BrightMax" value="1000" disabled>
+        </div>
+        <div class="form-group">
+            <label for="LevelWater1">Niveau d'eau1</label>
+            <input type="number" class="form-control" id="LevelWater1" value=""disabled>
+        </div>
+        <div class="form-group">
+            <label for="LevelWater2">Niveau d'eau2</label>
+            <input type="number" class="form-control" id="LevelWater2" value="" disabled>
+        </div>
+    </section>
+<section class="container mt-4 animated">
+    <h4>Contrôle des données</h4>
+    <p id="temperature">Température: <span>25</span> °C</p>
+    <p id="Brightness">Luminosité: <span>60</span>%</p>
+    <p id="LevelWater1">Niveau d'eau1: <span>0</span></p>
+    <p id="LevelWater2">Niveau d'eau2: <span>0</span></p>
+
+    <div>
+            <h2>Contrôle de la serre</h2>
+            <button onclick="toggleVentilateur()">Allumer/Éteindre Ventilateur</button>
+            <button onclick="togglePompe()">Allumer/Éteindre Pompe</button>
+        </div>
+        <div>
+        
+
+        </div>
+        <div>
+            <h2>État des dispositifs</h2>
+            <p>Ventilateur: <span id="ventilateurStatus">Éteint</span></p>
+            <p>Pompe: <span id="pompeStatus">Éteinte</span></p>
+        </div>
+
+    <script>
+        function toggleAutomatisation() {
+            var checkbox = document.getElementById("automatisation");
+            var tempMaxInput = document.getElementById("tempMax");
+            var BrightMaxInput = document.getElementById("BrightMax");
+            var LevelWater1Input = document.getElementById("LevelWater1");
+            var LevelWater2Input = document.getElementById("LevelWater2");
+
+            tempMaxInput.disabled = !checkbox.checked;
+            BrightMaxInput.disabled = !checkbox.checked;
+           LevelWater1Input.disabled = !checkbox.checked;
+           LevelWater2Input.disabled = !checkbox.checked;
+
+        }
+
+
+        function updateSensorData() {
+            var temperature = document.getElementById("Temperature").querySelector("span");
+            var Brightness = document.getElementById("Brightness").querySelector("span");
+            var LevelWater1 = document.getElementById("LevelWater1").querySelector("span");
+            var LevelWater2 = document.getElementById("LevelWater2").querySelector("span");
+
+            temperature.textContent = (Math.random() * 10 + 20).toFixed(2);
+            brightness.textContent = (Math.random() * 20 + 60).toFixed(2);
+            levelwater1.textContent=(math.random()* 10 + 20 ).toFixed(2);
+            LevelWater2.textContent=(math.random()* 20 + 60).toFixed(2);
+
+        } 
+        setInterval(updateSensorData, 5000);
+
+        updateSensorData();
+
+
+
+        function toggleVentilateur() {
+            var ventilateurStatus = document.getElementById("ventilateurStatus");
+            if (ventilateurStatus.innerText === "Éteint") {
+                allumerVentilateur();
+            } else {
+                eteindreVentilateur();
+            }
+        }
+
+        function togglePompe() {
+            var pompeStatus = document.getElementById("pompeStatus");
+            if (pompeStatus.innerText === "Éteinte") {
+                allumerPompe();
+            } else {
+                eteindrePompe();
+            }
+        }
+
+        function allumerVentilateur() {
+            console.log("Allumer le ventilateur");
+            document.getElementById("ventilateurStatus").innerText = "Allumé";
+        }
+
+        function eteindreVentilateur() {
+            console.log("Éteindre le ventilateur");
+            document.getElementById("ventilateurStatus").innerText = "Éteint";
+        }
+
+        function allumerPompe() {
+            console.log("Allumer la pompe");
+            document.getElementById("pompeStatus").innerText = "Allumée";
+        }
+
+        function eteindrePompe() {
+            console.log("Éteindre la pompe");
+            document.getElementById("pompeStatus").innerText = "Éteinte";
+        }
+        </script>
+       
+</body>
+</html>
